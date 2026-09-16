@@ -235,17 +235,46 @@
   /* ---------- ABOUT ---------- */
   /* ---------- VIDEO INTRO ---------- */
   .video-intro-wrap{ max-width:1040px; margin:0 auto; text-align:center; }
-  .video-frame-shell{
+  .video-frame-outer{
     position:relative; width:min(320px,78vw); margin:0 auto 40px;
+    animation:video-float 5.5s ease-in-out infinite;
+  }
+  .video-frame-outer::before{
+    content:''; position:absolute; inset:-14px; border-radius:30px;
+    background:radial-gradient(circle at 50% 40%, rgba(224,150,92,0.35), rgba(224,150,92,0) 70%);
+    filter:blur(6px); animation:video-glow 3.2s ease-in-out infinite; pointer-events:none;
+  }
+  .video-frame-shell{
+    position:relative; width:100%; margin:0 auto;
     border-radius:18px; overflow:hidden; background:#000;
     box-shadow:0 40px 80px -24px rgba(0,0,0,0.55);
-    border:1px solid rgba(247,244,236,0.14);
+    border:1px solid rgba(247,244,236,0.18);
+    transition:transform .5s cubic-bezier(.16,1,.3,1), box-shadow .5s cubic-bezier(.16,1,.3,1);
+  }
+  .video-frame-outer:hover .video-frame-shell{
+    transform:scale(1.025); box-shadow:0 48px 90px -20px rgba(0,0,0,0.65);
   }
   .video-frame-shell::before{
     content:''; display:block; padding-top:177.78%; /* 9:16 */
   }
   .video-frame-shell iframe{
     position:absolute; left:0; top:-9%; width:100%; height:118%; border:0;
+  }
+  .video-badge{
+    position:absolute; top:-12px; right:-10px; z-index:3;
+    background:var(--terracotta); color:var(--ivory); font-family:'Manrope',sans-serif;
+    font-weight:700; font-size:10.5px; letter-spacing:0.08em; text-transform:uppercase;
+    padding:8px 13px; border-radius:20px; box-shadow:0 14px 30px -10px rgba(0,0,0,0.5);
+    display:flex; align-items:center; gap:5px;
+    animation:badge-pop .6s cubic-bezier(.34,1.56,.64,1) .4s both;
+  }
+  .video-badge .dot{ width:6px; height:6px; border-radius:50%; background:var(--ivory); animation:dot-blink 1.6s ease-in-out infinite; }
+  @keyframes video-float{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-8px); } }
+  @keyframes video-glow{ 0%,100%{ opacity:.55; } 50%{ opacity:1; } }
+  @keyframes badge-pop{ 0%{ transform:scale(0) rotate(-8deg); opacity:0; } 100%{ transform:scale(1) rotate(0); opacity:1; } }
+  @keyframes dot-blink{ 0%,100%{ opacity:1; } 50%{ opacity:.25; } }
+  @media (prefers-reduced-motion: reduce){
+    .video-frame-outer, .video-frame-outer::before, .video-badge .dot{ animation:none; }
   }
   .video-intro-cta{ margin-top:8px; }
   .pricing-card{
@@ -646,8 +675,11 @@
     <div class="wrap video-intro-wrap">
       <span class="eyebrow reveal on-dark">Before You Book</span>
       <h2 class="reveal reveal-delay-1" style="color:var(--ivory); margin-bottom:28px;">A quick hello from Anushree</h2>
-      <div class="video-frame-shell reveal reveal-delay-2">
-        <iframe src="https://www.youtube-nocookie.com/embed/T9QU5rm23Fk?modestbranding=1&rel=0&iv_load_policy=3&playsinline=1&color=white" title="A quick hello from Anushree" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      <div class="video-frame-outer reveal reveal-delay-2">
+        <span class="video-badge"><span class="dot"></span> 60 SEC</span>
+        <div class="video-frame-shell">
+          <iframe src="https://www.youtube-nocookie.com/embed/5jutI2onIz4?modestbranding=1&rel=0&iv_load_policy=3&playsinline=1&color=white" title="A quick hello from Anushree" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div>
       </div>
 
       <div class="video-intro-cta reveal reveal-delay-3">
@@ -656,7 +688,7 @@
           <div class="pricing-amount">&#8377;25,000</div>
           <div class="pricing-detail"><strong>8 coaching sessions</strong> + <strong>2 bonus sessions</strong> &mdash; 10 sessions in all, to help the shift actually stick.</div>
           <div class="video-intro-btnrow">
-            <a href="#offer" class="btn btn-primary" style="width:100%; justify-content:center;">Book a Clarity Call <span class="arrow">&rarr;</span></a>
+            <a href="#offer" class="btn btn-primary pulse-cta" style="width:100%; justify-content:center;">Book a Clarity Call <span class="arrow">&rarr;</span></a>
             <a href="https://wa.me/919830145000?text=Hi%20Anushree%2C%20I%27d%20like%20to%20know%20more%20about%20the%20Clarity%20Program." target="_blank" rel="noopener" class="btn btn-whatsapp" style="width:100%; justify-content:center;">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.001 2C6.478 2 2 6.477 2 12c0 1.887.525 3.647 1.437 5.152L2 22l4.98-1.408A9.958 9.958 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12.001 2zm0 18.062a8.03 8.03 0 01-4.354-1.281l-.312-.198-2.957.836.845-2.881-.203-.297A8.03 8.03 0 013.938 12c0-4.454 3.61-8.062 8.063-8.062 4.454 0 8.062 3.608 8.062 8.062 0 4.454-3.608 8.062-8.062 8.062z"/></svg>
               Ask on WhatsApp
